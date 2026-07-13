@@ -4,21 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSAFY 광주 캠퍼스 | 따뜻한 성장의 요람</title>
-    <!-- 산돌 폰트(Jua) 적용 -->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        'main': ['Jua', 'sans-serif'],
-                    },
-                    colors: {
-                        'warm-bg': '#fefce8', 
-                        'warm-brown': '#78350f', 
-                        'soft-amber': '#f59e0b',
-                    }
+                    fontFamily: { 'main': ['Jua', 'sans-serif'] },
+                    colors: { 'warm-bg': '#fefce8', 'warm-brown': '#78350f', 'soft-amber': '#f59e0b' }
                 }
             }
         }
@@ -26,85 +19,168 @@
     <style>
         body { background-color: #fefce8; color: #4a3728; font-family: 'Jua', sans-serif; }
         .hover-bounce:hover { transform: translateY(-8px) rotate(1deg); transition: all 0.3s ease; }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Header -->
     <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-orange-100 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center" aria-label="메인 내비게이션">
             <div class="text-3xl font-black text-warm-brown flex items-center gap-2">🌱 SSAFY Gwangju</div>
             <div class="hidden md:flex space-x-8 font-bold text-xl text-orange-900/80">
                 <a href="#home" class="hover:text-amber-600 transition">홈</a>
-                <a href="#highlights" class="hover:text-amber-600 transition">캠퍼스 특징</a>
+                <a href="#about" class="hover:text-amber-600 transition">캠퍼스 특징</a>
                 <a href="#recruit" class="hover:text-amber-600 transition">모집 안내</a>
                 <a href="#location" class="hover:text-amber-600 transition">찾아오시는 길</a>
             </div>
-            <a href="https://www.ssafy.com/ksp/jsp/swp/apply/swpApplyProcess.jsp" target="_blank" class="bg-amber-500 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:bg-orange-600 transition">입과 신청</a>
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" class="md:hidden text-warm-brown text-2xl" aria-label="메뉴 열기">☰</button>
+            <a href="https://www.ssafy.com/ksp/jsp/swp/apply/swpApplyProcess.jsp" target="_blank" rel="noopener noreferrer" class="hidden md:block bg-amber-500 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:bg-orange-600 transition">입과 신청</a>
         </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-6 space-y-4 text-center border-t">
+            <a href="#home" class="block">홈</a>
+            <a href="#about" class="block">캠퍼스 특징</a>
+            <a href="#recruit" class="block">모집 안내</a>
+            <a href="#location" class="block">찾아오시는 길</a>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="pt-40 pb-20 px-6 container mx-auto text-center md:text-left">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <div class="inline-block bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-xl font-bold mb-4">✨ 꿈이 자라나는 따뜻한 공간</div>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-warm-brown leading-tight mb-6">호남권 SW 인재의<br><span class="text-amber-500">따뜻한 성장</span> 요람</h1>
-                <p class="text-2xl text-stone-700 mb-8 leading-relaxed">최적의 몰입 환경에서 동료들과 함께 성장하며, 비전공자에서 정예 개발자로 거듭나는 공간입니다.</p>
-                <a href="https://www.ssafy.com/ksp/jsp/swp/apply/swpApplyProcess.jsp" target="_blank" class="inline-block bg-amber-500 text-white px-8 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-orange-600 transition">지금 바로 지원하기</a>
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="pt-40 pb-20 px-6 container mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <div class="inline-block bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-xl font-bold mb-4">✨ 꿈이 자라나는 따뜻한 공간</div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-warm-brown leading-tight mb-6">호남권 SW 인재의<br><span class="text-amber-500">따뜻한 성장</span> 요람</h1>
+                    <p class="text-2xl text-stone-700 mb-8 leading-relaxed">최적의 몰입 환경에서 동료들과 함께 성장하며, 비전공자에서 정예 개발자로 거듭나는 공간입니다.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://www.ssafy.com/ksp/jsp/swp/apply/swpApplyProcess.jsp" target="_blank" rel="noopener noreferrer" class="bg-amber-500 text-white px-8 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-orange-600 transition">지금 바로 지원하기</a>
+                        <a href="#recruit" class="bg-white border-2 border-amber-500 text-amber-500 px-8 py-4 rounded-full text-xl font-bold hover:bg-amber-50 transition">캠퍼스 둘러보기</a>
+                    </div>
+                </div>
+                <div class="relative fade-in">
+                    <img src="a.png" onerror="this.src='https://placehold.co/600x400?text=SSAFY+단체사진'" alt="SSAFY 광주 캠퍼스 교육생 단체 사진" class="rounded-[3rem] shadow-2xl rotate-2 border-4 border-white w-full">
+                </div>
             </div>
-            <div class="relative">
-                <img src="a.png" onerror="this.src='https://placehold.co/600x400?text=이미지를+같은+폴더에+넣어주세요'" alt="SSAFY 단체사진" class="rounded-[3rem] shadow-2xl rotate-2 border-4 border-white w-full">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 fade-in">
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center">
+                    <div class="text-4xl font-black text-amber-500">1000+</div>
+                    <p>누적 수료생</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center">
+                    <div class="text-4xl font-black text-amber-500">500+</div>
+                    <p>진행 프로젝트</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center">
+                    <div class="text-4xl font-black text-amber-500">90%</div>
+                    <p>취업 성공률</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center">
+                    <div class="text-4xl font-black text-amber-500">24/7</div>
+                    <p>열린 스터디</p>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Highlights -->
-    <section id="highlights" class="py-24 bg-white/50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-5xl font-black text-center text-warm-brown mb-16">우리 캠퍼스 자랑거리!</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-[2rem] shadow-lg hover-bounce">
-                    <img src="c.jpg" onerror="this.src='https://placehold.co/400x300?text=강의실'" class="w-full h-48 object-cover rounded-2xl mb-6">
-                    <h3 class="text-3xl font-bold text-warm-brown mb-2">몰입형 인프라</h3>
-                    <p class="text-xl text-stone-600">최신 사양 PC와 쾌적한 실습 강의실!</p>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] shadow-lg hover-bounce">
-                    <img src="b.jpg" onerror="this.src='https://placehold.co/400x300?text=로고'" class="w-full h-48 object-cover rounded-2xl mb-6">
-                    <h3 class="text-3xl font-bold text-warm-brown mb-2">끈끈한 네트워킹</h3>
-                    <p class="text-xl text-stone-600">함께 고민하고 성장하는 동료들!</p>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] shadow-lg hover-bounce">
-                    <img src="d.jpg" onerror="this.src='https://placehold.co/400x300?text=교육실'" class="w-full h-48 object-cover rounded-2xl mb-6">
-                    <h3 class="text-3xl font-bold text-warm-brown mb-2">밀착 케어 시스템</h3>
-                    <p class="text-xl text-stone-600">프로 교수진과 실무 멘토단의 1:1 케어!</p>
+        <!-- Campus Highlights & About -->
+        <section id="about" class="py-24 bg-white/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-5xl font-black text-center text-warm-brown mb-16 fade-in">우리 캠퍼스 자랑거리!</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-[2rem] shadow-lg hover-bounce fade-in">
+                        <img src="c.jpg" alt="강의실 전경" class="w-full h-48 object-cover rounded-2xl mb-6">
+                        <h3 class="text-3xl font-bold text-warm-brown mb-2">몰입형 인프라</h3>
+                        <p class="text-xl text-stone-600">최신 사양 PC와 쾌적한 실습 강의실!</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[2rem] shadow-lg hover-bounce fade-in">
+                        <img src="b.jpg" alt="SSAFY 로고" class="w-full h-48 object-cover rounded-2xl mb-6">
+                        <h3 class="text-3xl font-bold text-warm-brown mb-2">끈끈한 네트워킹</h3>
+                        <p class="text-xl text-stone-600">함께 고민하고 성장하는 동료들!</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-[2rem] shadow-lg hover-bounce fade-in">
+                        <img src="d.jpg" alt="교육실 환경" class="w-full h-48 object-cover rounded-2xl mb-6">
+                        <h3 class="text-3xl font-bold text-warm-brown mb-2">밀착 케어 시스템</h3>
+                        <p class="text-xl text-stone-600">프로 교수진과 실무 멘토단의 1:1 케어!</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Location -->
-    <section id="location" class="py-24 bg-stone-900 text-white">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-5xl font-black mb-12 text-amber-400">어디서 만나나요?</h2>
-            <div class="bg-stone-800 p-10 rounded-[3rem] inline-block max-w-2xl shadow-2xl">
-                <p class="text-3xl font-bold mb-4 text-amber-200">광주광역시 광산구 첨단과기로 (첨단 IT 밸리 내)</p>
-                <p class="text-2xl text-white">교통이 편리하고 주변엔 맛집과 편의시설이 가득!<br>공부도, 휴식도 완벽한 첨단지구의 중심입니다.</p>
+        <!-- Recruitment -->
+        <section id="recruit" class="py-24 container mx-auto px-6">
+            <h2 class="text-5xl font-black text-center text-warm-brown mb-16 fade-in">모집 안내</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-[2rem] shadow-lg fade-in">
+                    <h3 class="text-2xl font-bold mb-4">교육 대상</h3>
+                    <p>만 29세 이하 미취업자 중 전공 무관 지원 가능</p>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] shadow-lg fade-in">
+                    <h3 class="text-2xl font-bold mb-4">교육 혜택</h3>
+                    <p>매월 교육지원금 지급 및 우수 교육생 해외 연수</p>
+                </div>
             </div>
-        </div>
-    </section>
+            <!-- FAQ Section -->
+            <div class="mt-16 fade-in">
+                <h3 class="text-3xl font-bold text-center mb-8">자주 묻는 질문(FAQ)</h3>
+                <div class="space-y-4 max-w-3xl mx-auto">
+                    <details class="bg-white p-6 rounded-2xl shadow">
+                        <summary class="font-bold cursor-pointer">전공자가 아니어도 괜찮나요?</summary>
+                        <p class="mt-4">네, 비전공자도 기초부터 탄탄히 배울 수 있도록 커리큘럼이 구성되어 있습니다.</p>
+                    </details>
+                    <details class="bg-white p-6 rounded-2xl shadow">
+                        <summary class="font-bold cursor-pointer">지원 절차는 어떻게 되나요?</summary>
+                        <p class="mt-4">서류 접수 -> 에세이 작성 -> 적성 진단 -> 면접 순으로 진행됩니다.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location -->
+        <section id="location" class="py-24 bg-stone-900 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-5xl font-black mb-12 text-amber-400 fade-in">오시는 길</h2>
+                <div class="w-full h-96 bg-stone-700 rounded-[2rem] mb-8 overflow-hidden">
+                    <!-- 지도 위치 -->
+                    <iframe src="https://www.google.com/maps/embed?..." width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="bg-stone-800 p-10 rounded-[3rem] inline-block max-w-2xl shadow-2xl">
+                    <p class="text-3xl font-bold mb-4 text-amber-200">광주광역시 광산구 첨단과기로</p>
+                    <p class="text-lg">주차 가능 | 지하철 1호선 인근 | 버스 이용 가능</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer class="py-12 text-center text-stone-500 bg-stone-100">
+        <div class="flex justify-center space-x-6 mb-6">
+            <a href="#" aria-label="SSAFY 공식 홈페이지">홈페이지</a>
+            <a href="mailto:ssafy@ssafy.com" aria-label="이메일 문의">문의 메일</a>
+        </div>
         <p>&copy; 2026 Samsung Software Academy for Youth (SSAFY).</p>
     </footer>
 
     <script>
+        // Smooth scroll & Mobile menu
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
             });
         });
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        // Intersection Observer for Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('is-visible');
+            });
+        });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
