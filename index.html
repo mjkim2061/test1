@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김민지 | Minji's Portfolio</title>
+    
+    <!-- Google Fonts: Inter & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'Noto Sans KR', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: '#0f172a',
+                        primary: '#2563eb',
+                        primaryLight: '#60a5fa',
+                        grayLight: '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base styles & Smooth Scrolling fallback */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Glassmorphism Navigation */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        /* Hero Background Pattern */
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(15, 23, 42, 0.05) 0%, transparent 50%);
+            background-size: 100% 100%;
+        }
+
+        /* Project Card Hover Animation */
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e2e8f0;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+            border-color: #2563eb;
+        }
+
+        /* Card Image Placeholder Gradient */
+        .card-img-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-img-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            transition: all 0.7s ease;
+        }
+        .project-card:hover .card-img-bg::after {
+            left: 200%;
+        }
+
+        /* Fade-in Animation Classes */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+            visibility: visible;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Tech Stack Badges */
+        .tech-badge {
+            transition: all 0.2s ease;
+        }
+        .tech-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <header class="fixed w-full top-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer">
+                    <a href="#home" class="text-2xl font-bold text-navy tracking-tight">
+                        MINJI<span class="text-primary">.</span>
+                    </a>
+                </div>
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="nav-link text-slate-600 hover:text-primary font-medium transition-colors">About</a>
+                    <a href="#projects" class="nav-link text-slate-600 hover:text-primary font-medium transition-colors">Projects</a>
+                    <a href="#capabilities" class="nav-link text-slate-600 hover:text-primary font-medium transition-colors">Capabilities</a>
+                    
+                    <!-- Social Links -->
+                    <div class="flex items-center space-x-3 border-l pl-6 border-slate-200">
+                        <a href="https://github.com" target="_blank" class="text-slate-400 hover:text-navy transition-colors" title="GitHub">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+                        </a>
+                        <a href="https://velog.io" target="_blank" class="text-slate-400 hover:text-[#20c997] transition-colors" title="Tech Blog">
+                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5zm4.863 11.233c.099.049.21.074.321.074.156 0 .31-.044.444-.128l7.086-4.51c.218-.139.351-.383.351-.643v-2.31c0-.28-.153-.538-.396-.665a.735.735 0 0 0-.742.023l-7.07 4.673a.753.753 0 0 0-.353.64v2.531c0 .142.04.283.116.4.06.095.145.17.243.215zm-.677-7.915a.75.75 0 0 0-1.127.653v8.058c0 .285.161.543.415.666.255.122.56.096.79-.068l8.508-6.07a.75.75 0 0 0 .323-.616v-1.745a.75.75 0 0 0-.416-.67l-8.493-4.208z"/></svg>
+                        </a>
+                    </div>
+                    
+                    <a href="#contact" class="nav-link px-4 py-2 ml-4 rounded-full bg-navy text-white hover:bg-primary transition-colors font-medium">Contact Me</a>
+                </nav>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-navy focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">About</a>
+                <a href="#projects" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Projects</a>
+                <a href="#capabilities" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Capabilities</a>
+                
+                <div class="px-3 py-2 flex space-x-4 border-t border-slate-100 mt-2">
+                     <a href="https://github.com" target="_blank" class="text-slate-500 hover:text-navy">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+                    </a>
+                     <a href="https://velog.io" target="_blank" class="text-slate-500 hover:text-[#20c997]">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5zm4.863 11.233c.099.049.21.074.321.074.156 0 .31-.044.444-.128l7.086-4.51c.218-.139.351-.383.351-.643v-2.31c0-.28-.153-.538-.396-.665a.735.735 0 0 0-.742.023l-7.07 4.673a.753.753 0 0 0-.353.64v2.531c0 .142.04.283.116.4.06.095.145.17.243.215zm-.677-7.915a.75.75 0 0 0-1.127.653v8.058c0 .285.161.543.415.666.255.122.56.096.79-.068l8.508-6.07a.75.75 0 0 0 .323-.616v-1.745a.75.75 0 0 0-.416-.67l-8.493-4.208z"/></svg>
+                    </a>
+                </div>
+                <a href="#contact" class="block mt-2 px-3 py-3 rounded-md text-base font-medium text-white bg-navy text-center hover:bg-primary">Contact Me</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="pt-32 pb-20 md:pt-48 md:pb-32 hero-pattern min-h-[90vh] flex items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+                <div class="w-full md:w-3/5 text-center md:text-left fade-in-section">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-primary font-semibold text-sm mb-6 border border-blue-100">
+                        Semiconductor & SW Convergence Engineer
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-navy leading-tight mb-6">
+                        반도체 도메인에<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">SW 역량</span>을 더하다
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed">
+                        안녕하세요! 데이터 기반 난제 해결과 실무적 솔루션을 제시하는 융합형 엔지니어 <strong class="text-navy font-semibold">김민지</strong>입니다.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#projects" class="px-8 py-4 bg-primary text-white rounded-lg font-medium shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:shadow-blue-500/50 transition-all transform hover:-translate-y-0.5 text-center">
+                            프로젝트 보기
+                        </a>
+                        <a href="#" class="flex justify-center items-center gap-2 px-8 py-4 bg-white text-navy border border-slate-200 rounded-lg font-medium hover:bg-slate-50 hover:border-slate-300 transition-all text-center group">
+                            <svg class="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            이력서 다운로드
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Abstract visual representation -->
+                <div class="w-full md:w-2/5 flex justify-center fade-in-section">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary to-blue-300 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                        <div class="absolute inset-4 bg-white rounded-3xl shadow-xl flex items-center justify-center border border-slate-100 rotate-3 hover:rotate-0 transition-transform duration-500">
+                            <!-- SVG Graphic for Semi/SW Convergence -->
+                            <svg class="w-32 h-32 text-navy" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 21H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 18V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 10L9 12L7 14" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M11 14H13" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl font-bold text-navy mb-4">About Me</h2>
+                <div class="h-1 w-16 bg-primary mx-auto rounded"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Education -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-shadow fade-in-section">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-primary mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-3">Education</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start">
+                            <span class="mr-2 text-primary mt-1">•</span>
+                            <span>화학신소재공학부 학사 졸업</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 text-primary mt-1">•</span>
+                            <span class="font-medium text-slate-800">차세대반도체학과 복수전공</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Current Activity -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-shadow fade-in-section" style="transition-delay: 100ms;">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-primary mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-3">Current Activity</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-start">
+                            <span class="mr-2 text-primary mt-1">•</span>
+                            <span>SSAFY(삼성청년SW아카데미) 16기</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 text-primary mt-1">•</span>
+                            <span>반도체 도메인 기반 SW 개발자 역량 강화 중</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Certifications -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-shadow fade-in-section" style="transition-delay: 200ms;">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-primary mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-3">Certifications</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-center">
+                            <span class="mr-2 text-primary">•</span> ADsP (데이터분석준전문가)
+                        </li>
+                        <li class="flex items-center">
+                            <span class="mr-2 text-primary">•</span> TOEIC
+                        </li>
+                        <li class="flex items-center">
+                            <span class="mr-2 text-primary">•</span> OPIc
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 bg-grayLight">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl font-bold text-navy mb-4">Projects</h2>
+                <div class="h-1 w-16 bg-primary mx-auto rounded mb-4"></div>
+                <p class="text-slate-500">연구 및 설계, 그리고 조직 운영 역량을 보여주는 주요 프로젝트입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <!-- Project 1 -->
+                <div class="project-card bg-white rounded-2xl overflow-hidden flex flex-col fade-in-section">
+                    <div class="h-48 card-img-bg flex items-center justify-center p-6 relative">
+                        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+                        <h3 class="text-2xl font-bold text-white text-center z-10">Perovskite 발광 효율 20% 향상</h3>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-50 text-primary text-xs font-semibold rounded-full border border-blue-100">소재 공학</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full">공정 개선</span>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-4">
+                            상평형 원리와 THAB 도입을 통해 Perovskite 소재의 구조적 안정성을 확보하고, 발광 효율을 극대화한 프로젝트입니다.
+                        </p>
+                        <ul class="mt-auto space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 상평형 원리 분석 및 적용</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> THAB 분자 도입을 통한 결함 패시베이션</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 최종 발광 효율 20% 향상 달성</li>
+                        </ul>
+                        
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <a href="#" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors">
+                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+                                관련 레포지토리 보기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card bg-white rounded-2xl overflow-hidden flex flex-col fade-in-section" style="transition-delay: 100ms;">
+                    <div class="h-48 card-img-bg flex items-center justify-center p-6 relative">
+                        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+                        <h3 class="text-2xl font-bold text-white text-center z-10 leading-snug">Multiple Ion Implantation 기반<br>누설 전류 제어 소자 설계</h3>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-50 text-primary text-xs font-semibold rounded-full border border-blue-100">반도체 소자</span>
+                            <span class="px-3 py-1 bg-yellow-50 text-yellow-600 text-xs font-semibold rounded-full border border-yellow-100">공모전 2위</span>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-4">
+                            RCAT 소자 구조의 숏채널 효과(Short Channel Effect)를 개선하기 위해 다중 이온 주입 공정을 설계하고 시뮬레이션한 프로젝트입니다.
+                        </p>
+                        <ul class="mt-auto space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> RCAT (Recess Channel Array Transistor) 구조 분석</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 누설 전류 제어를 위한 도핑 프로파일 최적화</li>
+                            <li class="flex items-start font-semibold text-slate-800"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 학과 공모전 2위 수상</li>
+                        </ul>
+                        
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <a href="#" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors">
+                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+                                시뮬레이션 결과 보기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card bg-white rounded-2xl overflow-hidden flex flex-col fade-in-section">
+                    <div class="h-48 card-img-bg flex items-center justify-center p-6 relative">
+                        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+                        <h3 class="text-2xl font-bold text-white text-center z-10">OECT 기반<br>고감도 아세톤 센서 개발</h3>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-50 text-primary text-xs font-semibold rounded-full border border-blue-100">센서 공학</span>
+                            <span class="px-3 py-1 bg-yellow-50 text-yellow-600 text-xs font-semibold rounded-full border border-yellow-100">학술대회 2위</span>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-4">
+                            Chitosan, PDMS, SnO2 복합 소재를 활용하여 고습도 환경에서도 신호 간섭을 완벽히 차단하는 유기 전기화학 트랜지스터(OECT) 센서를 개발했습니다.
+                        </p>
+                        <ul class="mt-auto space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 수분 저항성 소재(Chitosan/PDMS) 최적 배합 도출</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 호흡기 질환 조기 진단을 위한 아세톤 고감도 감지</li>
+                            <li class="flex items-start font-semibold text-slate-800"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 공과대학 학술대회 2위 수상</li>
+                        </ul>
+                        
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <a href="#" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors">
+                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+                                논문/보고서 보기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card bg-white rounded-2xl overflow-hidden flex flex-col fade-in-section" style="transition-delay: 100ms;">
+                    <div class="h-48 card-img-bg flex items-center justify-center p-6 relative">
+                        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+                        <h3 class="text-2xl font-bold text-white text-center z-10">COSS 서포터즈 홍보부장 활동</h3>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-50 text-green-600 text-xs font-semibold rounded-full border border-green-100">리더십 & 기획</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full">조직 운영</span>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-4">
+                            단순 기술 역량을 넘어 협업과 커뮤니케이션 능력을 발휘한 활동입니다. 창의적인 기획으로 다전공생의 참여를 유도했습니다.
+                        </p>
+                        <ul class="mt-auto space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 업무 순환제 최초 도입으로 팀 내 역량 상향 평준화</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> '퀴즈 존(Quiz Zone)' 운영 기획 및 실행</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-primary mt-1 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 오프라인 참여 확대 및 SNS 채널 활성화 달성</li>
+                        </ul>
+                        
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <a href="#" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors">
+                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                기획안 보기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="capabilities" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl font-bold text-navy mb-4">Capabilities</h2>
+                <div class="h-1 w-16 bg-primary mx-auto rounded"></div>
+            </div>
+
+            <!-- Tech Stack Section -->
+            <div class="mb-16 fade-in-section">
+                <h3 class="text-lg font-semibold text-slate-700 text-center mb-6">Tech Stack</h3>
+                <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+                    <span class="tech-badge px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium border border-blue-100 flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M14.228 16.666v-4.103h-4.456v4.103h4.456zm.268-5.748h-4.992c-.171 0-.31.139-.31.31v5.626c0 .171.139.31.31.31h4.992c.171 0 .31-.139.31-.31v-5.626c0-.171-.139-.31-.31-.31zm3.876 5.748v-4.103h-4.456v4.103h4.456zm.268-5.748h-4.992c-.171 0-.31.139-.31.31v5.626c0 .171.139.31.31.31h4.992c.171 0 .31-.139.31-.31v-5.626c0-.171-.139-.31-.31-.31zm-7.752-5.748H6.432v4.103h4.456V5.17zm.268-1.644H5.896c-.171 0-.31.139-.31.31v5.626c0 .171.139.31.31.31h4.992c.171 0 .31-.139.31-.31V3.836c0-.171-.139-.31-.31-.31zM6.432 16.666v-4.103H1.976v4.103h4.456zm.268-5.748H1.708c-.171 0-.31.139-.31.31v5.626c0 .171.139.31.31.31h4.992c.171 0 .31-.139.31-.31v-5.626c0-.171-.139-.31-.31-.31zm15.324-5.748h-4.456v4.103h4.456V5.17zm.268-1.644h-4.992c-.171 0-.31.139-.31.31v5.626c0 .171.139.31.31.31h4.992c.171 0 .31-.139.31-.31V3.836c0-.171-.139-.31-.31-.31z"/></svg>
+                        Python
+                    </span>
+                    <span class="tech-badge px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium border border-red-100 flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.062 0L.987 6.425v11.15L12.062 24l11.075-6.425V6.425L12.062 0zm-1.155 17.514c-1.393.585-3.003.585-4.396 0l-2.023-3.504c-1.393-2.411-1.393-6.284 0-8.695l2.023-3.504c1.393-2.411 3.003-3.09 4.396-1.921 1.393 1.17 1.393 3.003 0 4.173L8.884 7.568c-.696-.585-1.501-.585-2.198 0-.696.585-1.045 1.536-.784 2.12.261.585.609.585 1.045 0l2.023-3.504c.436-.585 1.221-.585 1.657 0 .436.585.784 1.536.784 2.12v8.694c0 1.17-.609 2.502-1.393 3.087-.784.585-2.003.585-2.787 0l-2.023-3.504c-1.393-2.411-1.393-6.284 0-8.695l2.023-3.504c1.393-2.411 3.614-2.411 5.006 0l2.023 3.504c1.393 2.411 1.393 6.284 0 8.695l-2.023 3.504z"/></svg>
+                        Java
+                    </span>
+                    <span class="tech-badge px-4 py-2 bg-green-50 text-green-700 rounded-lg text-sm font-medium border border-green-100 flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.062 0L.987 6.425v11.15L12.062 24l11.075-6.425V6.425L12.062 0zm-1.155 17.514c-1.393.585-3.003.585-4.396 0l-2.023-3.504c-1.393-2.411-1.393-6.284 0-8.695l2.023-3.504c1.393-2.411 3.003-3.09 4.396-1.921 1.393 1.17 1.393 3.003 0 4.173L8.884 7.568c-.696-.585-1.501-.585-2.198 0-.696.585-1.045 1.536-.784 2.12.261.585.609.585 1.045 0l2.023-3.504c.436-.585 1.221-.585 1.657 0 .436.585.784 1.536.784 2.12v8.694c0 1.17-.609 2.502-1.393 3.087-.784.585-2.003.585-2.787 0l-2.023-3.504c-1.393-2.411-1.393-6.284 0-8.695l2.023-3.504c1.393-2.411 3.614-2.411 5.006 0l2.023 3.504c1.393 2.411 1.393 6.284 0 8.695l-2.023 3.504z"/></svg>
+                        Spring Boot
+                    </span>
+                    <span class="tech-badge px-4 py-2 bg-yellow-50 text-yellow-700 rounded-lg text-sm font-medium border border-yellow-100 flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M0 7.334v8h24v-8H0zm11.666 6.832H9.832v-2.332H8.332v2.332H6.5v-2.332H4.999v2.332H3.166V8.834h8.5v5.332zm9.168-5.332h-1.834v3.5h-1.332v-3.5h-1.834v5.332h5V8.834zm-8.334 0v5.332h-1.5V8.834h1.5z"/></svg>
+                        JavaScript
+                    </span>
+                    <span class="tech-badge px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium border border-slate-200 flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                        Git & GitHub
+                    </span>
+                    <span class="tech-badge px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-medium border border-indigo-100 flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        Data Analysis
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Skill 1 -->
+                <div class="text-center p-6 fade-in-section">
+                    <div class="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center border-4 border-blue-50 mb-6 shadow-sm">
+                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-4">SW & Data</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed text-left">
+                        <strong>SSAFY 16기</strong> 과정을 통해 실무 기반의 체계적인 소프트웨어 개발 역량을 기르고 있습니다. 또한, <strong>ADsP 자격증</strong> 취득을 기반으로 복잡한 공정 데이터를 논리적으로 분석하고 인사이트를 도출하는 데이터 리터러시 역량을 보유하고 있습니다.
+                    </p>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="text-center p-6 fade-in-section" style="transition-delay: 100ms;">
+                    <div class="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center border-4 border-blue-50 mb-6 shadow-sm">
+                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-4">반도체 공정 및 설계</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed text-left">
+                        미세화 공정 한계 극복을 위한 <strong>HKMG (High-K Metal Gate) 구조</strong> 도입에 대한 깊은 이해를 갖추고 있으며, 열처리에 따른 특성 저하를 방지하기 위한 <strong>Gate Last 공정 플로우</strong> 설계 지식을 기반으로 차세대 소자 연구 역량을 갖추었습니다.
+                    </p>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="text-center p-6 fade-in-section" style="transition-delay: 200ms;">
+                    <div class="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center border-4 border-blue-50 mb-6 shadow-sm">
+                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-4">분석 장비 활용</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed text-left">
+                        소재 및 소자의 표면, 계면, 결함 특성을 분석하기 위해 <strong>XRR, XPS, EPR</strong> 등 정밀 기기 분석 장비를 직접 운용하고, 측정된 원시 데이터를 신뢰성 있게 모니터링 및 시각화하여 품질 개선에 기여할 수 있습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-navy text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center fade-in-section">
+            <h2 class="text-3xl font-bold mb-6">함께 일할 준비가 되었습니다.</h2>
+            <p class="text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                반도체 도메인의 깊은 지식과 논리적인 소프트웨어 개발 역량을 바탕으로 현업의 난제를 함께 해결할 융합형 인재, 김민지입니다. 언제든 편하게 연락 주시기 바랍니다.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
+                <a href="mailto:plus2061@naver.com" class="flex items-center gap-3 px-6 py-4 bg-primary hover:bg-blue-600 rounded-lg font-medium transition-all transform hover:scale-105 shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    plus2061@naver.com
+                </a>
+                
+                <div class="flex gap-4">
+                    <a href="https://github.com" target="_blank" class="w-14 h-14 flex items-center justify-center rounded-full bg-slate-800 hover:bg-slate-700 transition-colors transform hover:scale-110 shadow-lg text-white" title="GitHub">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+                    </a>
+                    <a href="https://velog.io" target="_blank" class="w-14 h-14 flex items-center justify-center rounded-full bg-slate-800 hover:bg-[#20c997] transition-colors transform hover:scale-110 shadow-lg text-white" title="Tech Blog">
+                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5zm4.863 11.233c.099.049.21.074.321.074.156 0 .31-.044.444-.128l7.086-4.51c.218-.139.351-.383.351-.643v-2.31c0-.28-.153-.538-.396-.665a.735.735 0 0 0-.742.023l-7.07 4.673a.753.753 0 0 0-.353.64v2.531c0 .142.04.283.116.4.06.095.145.17.243.215zm-.677-7.915a.75.75 0 0 0-1.127.653v8.058c0 .285.161.543.415.666.255.122.56.096.79-.068l8.508-6.07a.75.75 0 0 0 .323-.616v-1.745a.75.75 0 0 0-.416-.67l-8.493-4.208z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-700 text-slate-400 text-sm">
+                <p>&copy; 2026 KIM MINJI. All rights reserved.</p>
+                <p class="mt-2">Semiconductor & SW Convergence Engineer</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Mobile Menu Toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            const mobileLinks = menu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                });
+            });
+
+            // 2. Smooth Scroll JS (Enhancing the CSS smooth behavior)
+            const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+            smoothScrollLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const headerOffset = 80; // Height of sticky header
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 3. Scroll Animation (Intersection Observer for Fade-In)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, observerOptions);
+
+            const fadeSections = document.querySelectorAll('.fade-in-section');
+            fadeSections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Trigger initial visibility for elements already in viewport
+            setTimeout(() => {
+                fadeSections.forEach(section => {
+                    if (section.getBoundingClientRect().top < window.innerHeight) {
+                        section.classList.add('is-visible');
+                    }
+                });
+            }, 100);
+
+            // 4. Header style change on scroll
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-sm');
+                } else {
+                    header.classList.remove('shadow-sm');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
